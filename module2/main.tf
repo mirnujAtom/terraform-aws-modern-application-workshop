@@ -29,4 +29,12 @@ module "platform" {
 }
 
 
-
+module "ecs" {
+  source = "modules/ecs"
+  app_name = "${var.appname}"
+  environment = "${var.environment}"
+  ecs_service_role_arn = "${module.platform.ecs_service_role_arn}"
+  ecs_task_role_arn = "${module.platform.ecs_task_role_arn}"
+  app_image = "${var.app_image}"
+  region = "${var.region}"
+}
