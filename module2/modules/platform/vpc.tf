@@ -1,6 +1,6 @@
 module "vpc" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc?ref=v1.66.0"
-  name = "${var.name}"
+  name = "${var.app_name}-vpc"
   azs   = "${var.avz_names}"
 
   cidr = "${var.vpc_cidr}"
