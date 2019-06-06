@@ -1,13 +1,13 @@
 resource "aws_ecr_repository" "app-repo" {
-  name = "${var.app_name}/service"
+  name = "${var.app_name}-${var.environment}/service"
 }
 
 resource "aws_ecs_cluster" "app-ecs-cluster" {
-  name = "${var.app_name}-cluster"
+  name = "${var.app_name}-${var.environment}-cluster"
 }
 
 resource "aws_cloudwatch_log_group" "app-ecs-log-group" {
-  name = "${var.app_name}-logs"
+  name = "${var.app_name}-${var.environment}-logs"
 
   tags = {
     Environment = "${var.environment}"
@@ -17,7 +17,7 @@ resource "aws_cloudwatch_log_group" "app-ecs-log-group" {
 
 module "container_definitions" {
   source = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition?ref=tags/0.14.0"
-  container_name = "${var.app_name}-service"
+  container_name = "${var.app_name}-${var.environment}-service"
   container_image = "${var.app_image}"
 
   port_mappings = [
@@ -32,7 +32,7 @@ module "container_definitions" {
   log_options = {
     awslogs-group = "${aws_cloudwatch_log_group.app-ecs-log-group.name}"
     awslogs-region = "${var.region}"
-    awslogs-stream-prefix = "awslogs-${var.app_name}-service"
+    awslogs-stream-prefix = "awslogs-${var.app_name}-${var.environment}-service"
   }
   essential = "true"
 }
@@ -51,9 +51,9 @@ resource "aws_ecs_task_definition" "app-task-definition" {
 
 
 resource "aws_ecs_service" "app-ecs-service" {
-  name = "${var.app_name}-service"
+  name = "${var.app_name}-${var.environment}-service"
   cluster = "${aws_ecs_cluster.app-ecs-cluster.name}"
-  task_definition = "${aws_ecs_task_definition.app-task-definition.family}"
+  task_definition = "${aws_ecs_task_definition.app-task-definition.arn}"
   launch_type = "FARGATE"
 
   deployment_maximum_percent = 200
@@ -67,7 +67,7 @@ resource "aws_ecs_service" "app-ecs-service" {
     subnets = [ "${var.private_subnets}" ]
   }
   load_balancer {
-    container_name = "${var.app_name}-service"
+    container_name = "${var.app_name}-${var.environment}-service"
     container_port = 8080
     target_group_arn = "${var.lb_target_group_arn}"
   }

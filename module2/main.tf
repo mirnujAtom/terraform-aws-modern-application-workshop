@@ -52,3 +52,11 @@ module "s3site" {
   lb_address = "${module.platform.lb_address}"
 }
 
+module "cicd" {
+  source = "modules/cicd"
+  app_name = "${var.app_name}"
+  region = "${var.region}"
+  environment = "${var.environment}"
+  code_pipeline_role_arn = "${module.platform.code_pipeline_role_arn}"
+  code_build_role_arn = "${module.platform.code_build_role_arn}"
+}

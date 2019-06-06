@@ -1,8 +1,8 @@
 resource "aws_security_group" "fargate_sg" {
   vpc_id = "${module.vpc.vpc_id}"
-  name = "fargate_sg"
+  name = "${var.app_name}-${var.environment}-fargate-sg"
   tags {
-    Name = "fargate_sg"
+    Name = "${var.app_name}-${var.environment}-fargate-sg"
   }
 
   ingress {
@@ -11,10 +11,10 @@ resource "aws_security_group" "fargate_sg" {
     to_port = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
-/*  egress {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }*/
+  }
 }

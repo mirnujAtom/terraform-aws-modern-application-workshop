@@ -1,10 +1,10 @@
 
-resource "aws_iam_role" "EcsServiceRole" {
-  name = "EcsServiceRole"
-  assume_role_policy = "${data.aws_iam_policy_document.EcsServiceRole-assume.json}"
+resource "aws_iam_role" "ecs-service-role" {
+  name = "${var.app_name}-${var.environment}-ecs-service-role"
+  assume_role_policy = "${data.aws_iam_policy_document.ecs-service-role-assume.json}"
 }
 
-data "aws_iam_policy_document" "EcsServiceRole-assume" {
+data "aws_iam_policy_document" "ecs-service-role-assume" {
   statement {
     effect = "Allow"
     actions = [ "sts:AssumeRole" ]
@@ -51,23 +51,23 @@ data "aws_iam_policy_document" "ecs-service" {
 }
 
 resource "aws_iam_policy" "ecs-service-policy" {
-  name = "ecs-service-policy"
+  name = "${var.app_name}-${var.environment}-ecs-service-policy"
   policy = "${data.aws_iam_policy_document.ecs-service.json}"
 }
 
 resource "aws_iam_role_policy_attachment" "ecs-service-policy-attachment" {
   policy_arn = "${aws_iam_policy.ecs-service-policy.arn}"
-  role = "${aws_iam_role.EcsServiceRole.name}"
+  role = "${aws_iam_role.ecs-service-role.name}"
 }
 
 //////////////////
 
-resource "aws_iam_role" "ECSTaskRole" {
-  name = "ECSTaskRole"
-  assume_role_policy = "${data.aws_iam_policy_document.ECSTaskRole-assume.json}"
+resource "aws_iam_role" "ecs-task-role" {
+  name = "${var.app_name}-${var.environment}-ecs-task-role"
+  assume_role_policy = "${data.aws_iam_policy_document.ecs-task-role-assume.json}"
 }
 
-data "aws_iam_policy_document" "ECSTaskRole-assume" {
+data "aws_iam_policy_document" "ecs-task-role-assume" {
   statement {
     effect = "Allow"
     actions = [ "sts:AssumeRole" ]
@@ -79,7 +79,7 @@ data "aws_iam_policy_document" "ECSTaskRole-assume" {
 }
 
 
-data "aws_iam_policy_document" "AmazonECSTaskRolePolicy-document" {
+data "aws_iam_policy_document" "ecs-task-role-policy-document" {
   statement {
     effect = "Allow"
     actions = [
@@ -102,18 +102,18 @@ data "aws_iam_policy_document" "AmazonECSTaskRolePolicy-document" {
       "dynamodb:UpdateItem",
       "dynamodb:GetItem"
     ]
-    resources = [ "arn:aws:dynamodb:*:*:table/MysfitsTable*" ]
+    resources = [ "arn:aws:dynamodb:*:*:table/${var.app_name}-${var.environment}-table*" ]
   }
 }
 
-resource "aws_iam_policy" "AmazonECSTaskRolePolicy" {
-  name = "AmazonECSTaskRolePolicy"
-  policy = "${data.aws_iam_policy_document.AmazonECSTaskRolePolicy-document.json}"
+resource "aws_iam_policy" "ecs-task-role-policy" {
+  name = "${var.app_name}-${var.environment}-ecs-task-role-policy"
+  policy = "${data.aws_iam_policy_document.ecs-task-role-policy-document.json}"
 }
 
-resource "aws_iam_role_policy_attachment" "AmazonECSTaskRolePolicy-attachment" {
-  policy_arn = "${aws_iam_policy.AmazonECSTaskRolePolicy.arn}"
-  role = "${aws_iam_role.ECSTaskRole.name}"
+resource "aws_iam_role_policy_attachment" "ecs-task-role-policy-attachment" {
+  policy_arn = "${aws_iam_policy.ecs-task-role-policy.arn}"
+  role = "${aws_iam_role.ecs-task-role.name}"
 }
 
 
@@ -122,12 +122,12 @@ resource "aws_iam_role_policy_attachment" "AmazonECSTaskRolePolicy-attachment" {
 
 
 
-resource "aws_iam_role" "MythicalMysfitsServiceCodePipelineServiceRole" {
-  name = "MythicalMysfitsServiceCodePipelineServiceRole"
-  assume_role_policy = "${data.aws_iam_policy_document.MythicalMysfitsServiceCodePipelineServiceRole-assume.json}"
+resource "aws_iam_role" "application-service-code-pipeline-service-role" {
+  name = "${var.app_name}-${var.environment}-service-code-pipeline-service-role"
+  assume_role_policy = "${data.aws_iam_policy_document.application-service-code-pipeline-service-role-assume.json}"
 }
 
-data "aws_iam_policy_document" "MythicalMysfitsServiceCodePipelineServiceRole-assume" {
+data "aws_iam_policy_document" "application-service-code-pipeline-service-role-assume" {
   statement {
     effect = "Allow"
     actions = [ "sts:AssumeRole" ]
@@ -139,7 +139,7 @@ data "aws_iam_policy_document" "MythicalMysfitsServiceCodePipelineServiceRole-as
 }
 
 
-data "aws_iam_policy_document" "MythicalMysfitsService-codepipeline-service-policy-document" {
+data "aws_iam_policy_document" "application-service-codepipeline-service-policy-document" {
   statement {
     effect = "Allow"
     actions = [
@@ -181,14 +181,14 @@ data "aws_iam_policy_document" "MythicalMysfitsService-codepipeline-service-poli
   }
 }
 
-resource "aws_iam_policy" "MythicalMysfitsService-codepipeline-service-policy" {
-  name = "MythicalMysfitsService-codepipeline-service-policy"
-  policy = "${data.aws_iam_policy_document.MythicalMysfitsService-codepipeline-service-policy-document.json}"
+resource "aws_iam_policy" "application-service-codepipeline-service-policy" {
+  name = "${var.app_name}-${var.environment}-service-codepipeline-service-policy"
+  policy = "${data.aws_iam_policy_document.application-service-codepipeline-service-policy-document.json}"
 }
 
-resource "aws_iam_role_policy_attachment" "MythicalMysfitsService-codepipeline-service-policy-role-attachment" {
-  policy_arn = "${aws_iam_policy.MythicalMysfitsService-codepipeline-service-policy.arn}"
-  role = "${aws_iam_role.MythicalMysfitsServiceCodePipelineServiceRole.name}"
+resource "aws_iam_role_policy_attachment" "application-service-codepipeline-service-policy-role-attachment" {
+  policy_arn = "${aws_iam_policy.application-service-codepipeline-service-policy.arn}"
+  role = "${aws_iam_role.application-service-code-pipeline-service-role.name}"
 }
 
 
@@ -196,12 +196,12 @@ resource "aws_iam_role_policy_attachment" "MythicalMysfitsService-codepipeline-s
 
 
 
-resource "aws_iam_role" "MythicalMysfitsServiceCodeBuildServiceRole" {
-  name = "MythicalMysfitsServiceCodeBuildServiceRole"
-  assume_role_policy = "${data.aws_iam_policy_document.MythicalMysfitsServiceCodeBuildServiceRole-assume.json}"
+resource "aws_iam_role" "application-service-code-build-service-role" {
+  name = "${var.app_name}-${var.environment}-service-code-build-service-role"
+  assume_role_policy = "${data.aws_iam_policy_document.application-service-code-build-service-role-assume.json}"
 }
 
-data "aws_iam_policy_document" "MythicalMysfitsServiceCodeBuildServiceRole-assume" {
+data "aws_iam_policy_document" "application-service-code-build-service-role-assume" {
   statement {
     effect = "Allow"
     actions = [ "sts:AssumeRole" ]
@@ -213,7 +213,7 @@ data "aws_iam_policy_document" "MythicalMysfitsServiceCodeBuildServiceRole-assum
 }
 
 
-data "aws_iam_policy_document" "MythicalMysfitsService-CodeBuildServicePolicy-document" {
+data "aws_iam_policy_document" "application-service-code-build-service-policy-document" {
   statement {
     effect = "Allow"
     actions = [
@@ -224,7 +224,7 @@ data "aws_iam_policy_document" "MythicalMysfitsService-CodeBuildServicePolicy-do
       "codecommit:GitPull"
     ]
 
-    resources = ["arn:aws:codecommit:${var.region}:${var.account_id}:MythicalMysfitsServiceRepository"]
+    resources = ["arn:aws:codecommit:${var.region}:${var.account_id}:${var.app_name}-${var.environment}-service-repository"]
   }
   statement {
     effect = "Allow"
@@ -255,13 +255,13 @@ data "aws_iam_policy_document" "MythicalMysfitsService-CodeBuildServicePolicy-do
   }
 }
 
-resource "aws_iam_policy" "MythicalMysfitsService-CodeBuildServicePolicy" {
-  name = "MythicalMysfitsService-CodeBuildServicePolicy"
-  policy = "${data.aws_iam_policy_document.MythicalMysfitsService-CodeBuildServicePolicy-document.json}"
+resource "aws_iam_policy" "application-service-code-build-service-policy" {
+  name = "${var.app_name}-${var.environment}-service-code-build-service-policy"
+  policy = "${data.aws_iam_policy_document.application-service-code-build-service-policy-document.json}"
 }
 
-resource "aws_iam_role_policy_attachment" "MythicalMysfitsServiceCodeBuildServiceRole-attachment" {
-  policy_arn = "${aws_iam_policy.MythicalMysfitsService-CodeBuildServicePolicy.arn}"
-  role = "${aws_iam_role.MythicalMysfitsServiceCodeBuildServiceRole.name}"
+resource "aws_iam_role_policy_attachment" "application-service-code-build-service-role-attachment" {
+  policy_arn = "${aws_iam_policy.application-service-code-build-service-policy.arn}"
+  role = "${aws_iam_role.application-service-code-build-service-role.name}"
 }
 

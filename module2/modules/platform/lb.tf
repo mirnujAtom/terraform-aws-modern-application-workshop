@@ -1,5 +1,5 @@
 resource "aws_lb" "application-nlb" {
-  name = "${var.app_name}-nlb"
+  name = "${var.app_name}-${var.environment}-nlb"
   load_balancer_type = "network"
   internal = false
   subnets = [ "${module.vpc.public_subnets}"]
@@ -10,7 +10,7 @@ resource "aws_lb" "application-nlb" {
 }
 
 resource "aws_lb_target_group" "applicaion-nlb-target-group" {
-  name = "${var.app_name}-targetgroup"
+  name = "${var.app_name}-${var.environment}-targetgroup"
   port = 8080
   protocol = "TCP"
   target_type = "ip"
@@ -23,6 +23,7 @@ resource "aws_lb_target_group" "applicaion-nlb-target-group" {
     unhealthy_threshold = 3
 
   }
+  depends_on = ["aws_lb.application-nlb"]
 }
 
 resource "aws_lb_listener" "application-nlb-listener" {
