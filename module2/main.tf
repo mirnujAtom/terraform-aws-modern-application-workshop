@@ -57,6 +57,8 @@ module "cicd" {
   app_name = "${var.app_name}"
   region = "${var.region}"
   environment = "${var.environment}"
-  code_pipeline_role_arn = "${module.platform.code_pipeline_role_arn}"
-  code_build_role_arn = "${module.platform.code_build_role_arn}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
+  ecs_service_id = "${module.ecs.ecs_service_id}"
+  ecs_cluster_id = "${module.ecs.ecs_cluster_id}"
+  ecr_repo_name = "${module.ecs.ecr_repo_name}"
 }
