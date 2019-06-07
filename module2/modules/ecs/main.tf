@@ -18,7 +18,7 @@ resource "aws_cloudwatch_log_group" "app-ecs-log-group" {
 module "container_definitions" {
   source = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition?ref=tags/0.14.0"
   container_name = "${var.app_name}-${var.environment}-service"
-  container_image = "${var.app_image}"
+  container_image = "${var.account_id}.ecr.${var.region}.amazonaws.com/${var.app_name}-${var.environment}/service:${var.app_version}"
 
   port_mappings = [
     {
@@ -35,7 +35,6 @@ module "container_definitions" {
     awslogs-stream-prefix = "awslogs-${var.app_name}-${var.environment}-service"
   }
   essential = "true"
-  depends_on = ["app-ecs-cluster"]
 }
 
 resource "aws_ecs_task_definition" "app-task-definition" {
@@ -47,7 +46,7 @@ resource "aws_ecs_task_definition" "app-task-definition" {
   execution_role_arn = "${aws_iam_role.ecs-service-role.arn}"
   task_role_arn = "${aws_iam_role.ecs-task-role.arn}"
   container_definitions = "${module.container_definitions.json}"
-
+  depends_on = ["aws_cloudwatch_log_group.app-ecs-log-group"]
 }
 
 
@@ -64,7 +63,7 @@ resource "aws_ecs_service" "app-ecs-service" {
 
   network_configuration {
     assign_public_ip = false
-    security_groups = [ "${var.fg_sg_id}" ]
+    security_groups = [ "${aws_security_group.fargate_sg.id}" ]
     subnets = [ "${var.private_subnets}" ]
   }
   load_balancer {

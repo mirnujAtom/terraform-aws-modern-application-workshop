@@ -1,7 +1,8 @@
 variable "app_name" {}
+variable "app_version" {}
 variable "environment" {}
 variable "region" {}
-variable "app_image" {}
+variable "account_id" {}
 variable "private_subnets" { type = "list"}
-variable "fg_sg_id" {}
+variable "vpc_id" {}
 variable "lb_target_group_arn" {}
