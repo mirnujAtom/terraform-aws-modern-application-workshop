@@ -35,6 +35,7 @@ module "container_definitions" {
     awslogs-stream-prefix = "awslogs-${var.app_name}-${var.environment}-service"
   }
   essential = "true"
+  depends_on = ["app-ecs-cluster"]
 }
 
 resource "aws_ecs_task_definition" "app-task-definition" {
@@ -43,8 +44,8 @@ resource "aws_ecs_task_definition" "app-task-definition" {
   memory = "1024"
   network_mode = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn = "${var.ecs_service_role_arn}"
-  task_role_arn = "${var.ecs_task_role_arn}"
+  execution_role_arn = "${aws_iam_role.ecs-service-role.arn}"
+  task_role_arn = "${aws_iam_role.ecs-task-role.arn}"
   container_definitions = "${module.container_definitions.json}"
 
 }

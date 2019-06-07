@@ -2,6 +2,7 @@ resource "aws_s3_bucket" "site_s3_bucket" {
 
   bucket = "${var.app_name}-${var.environment}"
   acl = "public-read"
+  force_destroy = true
 
   website {
     index_document = "index.html"

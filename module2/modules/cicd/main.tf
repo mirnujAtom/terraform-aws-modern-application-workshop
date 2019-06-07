@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "artfacts_s3_bucket" {
   bucket = "${var.app_name}-${var.environment}-artifacts-bucket"
+  force_destroy = true
 
 }
 
@@ -26,6 +27,10 @@ resource "aws_codebuild_project" "application-codebuild-project" {
     environment_variable {
       name = "AWS_ACCOUNT_ID"
       value = "${var.account_id}"
+    }
+    environment_variable {
+      name = "IMAGE_REPO"
+      value = "${var.app_name}-${var.environment}"
     }
     environment_variable {
       name = "AWS_DEFAULT_REGION"
