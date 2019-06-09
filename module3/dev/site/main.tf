@@ -6,8 +6,8 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    key = "myapp/module2.tfstate"
-    bucket = "module2-app-state"
+    key = "mysite-state/module3.tfstate"
+    bucket = "module3-app-state"
     profile = "personal"
     region = "us-east-1"
   }
@@ -20,8 +20,8 @@ data "aws_caller_identity" "current" {}
 data "terraform_remote_state" "platform_state" {
   backend = "s3"
   config {
-    key = "mypizdiuchky-state/module2-platform.tfstate"
-    bucket = "module2-platform-state"
+    key = "myplatform-state/module3-platform.tfstate"
+    bucket = "module3-platform-state"
     profile = "personal"
     region = "us-east-1"
   }
@@ -60,3 +60,6 @@ module "cicd" {
   ecr_repo_name = "${module.ecs.ecr_repo_name}"
 }
 
+module "dynamodb" {
+  source = "../../modules/dynamodb"
+}

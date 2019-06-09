@@ -6,8 +6,8 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    key = "myplatform-state/module2-platform.tfstate"
-    bucket = "module2-platform-state"
+    key = "myplatform-state/module3-platform.tfstate"
+    bucket = "module3-platform-state"
     profile = "personal"
     region = "us-east-1"
   }

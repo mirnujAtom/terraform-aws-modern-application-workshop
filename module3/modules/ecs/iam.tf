@@ -100,8 +100,7 @@ data "aws_iam_policy_document" "ecs-task-role-policy-document" {
   }
   statement {
     effect = "Allow"
-    actions = [
-      "dynamodb:Scan",
+    actions = [ "dynamodb:Scan",
       "dynamodb:Query",
       "dynamodb:UpdateItem",
       "dynamodb:GetItem"
