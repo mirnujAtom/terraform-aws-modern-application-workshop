@@ -1,44 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c6368fc1-157c-43c3-bc23-eab717bead80" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/module3/application/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/application/buildspec.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/application/service/mysfitsTableClient.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/application/service/mythicalMysfitsService.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/dev/platform/main.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/dev/platform/outputs.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/dev/platform/variables.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/dev/site/files/index.html.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/dev/site/main.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/dev/site/variables.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/dev/terraform.tfvars" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/cicd/iam.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/cicd/main.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/cicd/outputs.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/cicd/vars.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/dynamodb/dbdata.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/dynamodb/main.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/dynamodb/variables.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/ecs/iam.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/ecs/main.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/ecs/outputs.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/ecs/sgs.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/ecs/vars.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/platform/iam.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/platform/lb.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/platform/outputs.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/platform/vars.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/platform/vpc.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/s3site/main.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/s3site/outputs.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module3/modules/s3site/vars.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module2/application" beforeDir="false" afterPath="$PROJECT_DIR$/module2/application" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module2/dev/platform/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/module2/dev/platform/main.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module2/dev/site/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/module2/dev/site/main.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module2/modules/ecs/iam.tf" beforeDir="false" afterPath="$PROJECT_DIR$/module2/modules/ecs/iam.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/state_buckets/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/state_buckets/main.tf" afterDir="false" />
-    </list>
+    <list default="true" id="c6368fc1-157c-43c3-bc23-eab717bead80" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +26,7 @@
         <entry file="file://$PROJECT_DIR$/module2/modules/ecs/iam.tf">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="390">
-              <caret line="100" column="13" lean-forward="true" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
+              <caret line="100" column="13" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -339,6 +302,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
@@ -383,12 +347,12 @@
       <workItem from="1559645840115" duration="1232000" />
       <workItem from="1559647184073" duration="23000" />
       <workItem from="1559647235422" duration="14668000" />
-      <workItem from="1559729525470" duration="55143000" />
+      <workItem from="1559729525470" duration="55258000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71483000" />
+    <option name="totallyTimeSpent" value="71598000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1186" height="934" extended-state="0" />
@@ -770,7 +734,7 @@
     <entry file="file://$PROJECT_DIR$/module2/modules/ecs/iam.tf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
-          <caret line="100" column="13" lean-forward="true" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
+          <caret line="100" column="13" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
         </state>
       </provider>
     </entry>
