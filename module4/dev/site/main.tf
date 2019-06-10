@@ -6,8 +6,8 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    key = "mysite-state/module3.tfstate"
-    bucket = "module3-app-state"
+    key = "mysite-state/module4.tfstate"
+    bucket = "module4-app-state"
     profile = "personal"
     region = "us-east-1"
   }
@@ -20,8 +20,8 @@ data "aws_caller_identity" "current" {}
 data "terraform_remote_state" "platform_state" {
   backend = "s3"
   config {
-    key = "myplatform-state/module3-platform.tfstate"
-    bucket = "module3-platform-state"
+    key = "myplatform-state/module4-platform.tfstate"
+    bucket = "module4-platform-state"
     profile = "personal"
     region = "us-east-1"
   }
@@ -45,8 +45,11 @@ module "s3site" {
   app_name = "${var.app_name}"
   environment = "${var.environment}"
   region = "${var.region}"
-  index_template = "${var.index_template}"
+  site_files_dir = "${var.site_files_dir}"
   lb_address = "${data.terraform_remote_state.platform_state.lb_address}"
+  app_api_endpoint = "${module.authentication.app_api_endpoint}"
+  app_user_pool_id = "${module.authentication.app_user_pool_id}"
+  app_user_pool_client = "${module.authentication.app_user_pool_client}"
 }
 
 module "cicd" {
@@ -66,4 +69,15 @@ module "dynamodb" {
   app_name = "${var.app_name}"
   region = "${var.region}"
   environment = "${var.environment}"
+}
+
+module "authentication" {
+  source = "../../modules/authentication"
+  app_name = "${var.app_name}"
+  region = "${var.region}"
+  environment = "${var.environment}"
+  lb_arn = "${data.terraform_remote_state.platform_state.lb_arn}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
+  lb_address = "${data.terraform_remote_state.platform_state.lb_address}"
+  application_rest_api_swagger = "${var.application_rest_api_swagger}"
 }
