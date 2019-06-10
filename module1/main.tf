@@ -15,9 +15,9 @@ terraform {
 
 
 
-resource "aws_s3_bucket" "mypizdiuchky" {
+resource "aws_s3_bucket" "site_bucket" {
 
-  bucket = "mypizdiuchky"
+  bucket = "${var.site_name}"
   acl = "public-read"
 
   website {
@@ -25,11 +25,11 @@ resource "aws_s3_bucket" "mypizdiuchky" {
   }
 }
 
-data "aws_iam_policy_document" "mypizdiuchky" {
+data "aws_iam_policy_document" "site_policy_document" {
   statement {
     effect = "Allow"
     actions = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.mypizdiuchky.arn}", "${aws_s3_bucket.mypizdiuchky.arn}/*"]
+    resources = ["${aws_s3_bucket.site_bucket.arn}", "${aws_s3_bucket.site_bucket.arn}/*"]
     principals {
       identifiers = ["*"]
       type = "AWS"
@@ -38,13 +38,13 @@ data "aws_iam_policy_document" "mypizdiuchky" {
   }
 }
 
-resource "aws_s3_bucket_policy" "mypizdiuchky" {
-  bucket = "${aws_s3_bucket.mypizdiuchky.id}"
-  policy = "${data.aws_iam_policy_document.mypizdiuchky.json}"
+resource "aws_s3_bucket_policy" "site_policy" {
+  bucket = "${aws_s3_bucket.site_bucket.id}"
+  policy = "${data.aws_iam_policy_document.site_policy_document.json}"
 }
 
 resource "aws_s3_bucket_object" "indexfile" {
-  bucket = "${aws_s3_bucket.mypizdiuchky.id}"
+  bucket = "${aws_s3_bucket.site_bucket.id}"
   key = "index.html"
   source = "files/index.html"
   content_type = "text/html"
