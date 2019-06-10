@@ -1,8 +1,8 @@
 resource "aws_lb" "application-nlb" {
   name = "${var.app_name}-${var.environment}-nlb"
   load_balancer_type = "network"
-  internal = false
-  subnets = [ "${module.vpc.public_subnets}"]
+  internal = true
+  subnets = [ "${module.vpc.private_subnets}"]
 
   tags {
     Environment = "${var.environment}"

@@ -21,6 +21,7 @@ resource "aws_api_gateway_rest_api" "application_rest_api" {
 data "template_file" "application_rest_api_swagger" {
   template = "${file("${var.application_rest_api_swagger}")}"
   vars = {
+    API_NAME = "${var.app_name}-${var.environment}-rest-api"
     NLB_DNS = "${var.lb_address}"
     VPC_LINK_ID = "${aws_api_gateway_vpc_link.application_api_vpc_link.id}"
     REGION = "${var.region}"
