@@ -92,3 +92,29 @@ resource "aws_s3_bucket" "module4_app_state" {
     prevent_destroy = true
   }
 }
+
+
+resource "aws_s3_bucket" "module5_platform_state" {
+  bucket = "module5-platform-state"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+
+resource "aws_s3_bucket" "module5_app_state" {
+  bucket = "module5-app-state"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}

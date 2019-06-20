@@ -1,0 +1,56 @@
+{
+  "swagger": 2.0,
+  "info": {
+    "title": "${API_NAME}"
+  },
+  "paths": {
+    "/clicks": {
+      "put":{
+        "consumes":[
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses":{
+          "200": {
+            "statusCode": "200",
+            "headers":{
+              "Access-Control-Allow-Headers":{
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods":{
+                "type": "string"
+              },
+              "Access-Control-Allow-Origin":{
+                "type": "string" }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration":{
+          "responses":{
+            "default":{
+              "statusCode": "200",
+              "responseParameters":{
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS, PUT'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "credentials": "${click-processing-api-role}",
+          "connectionType": "INTERNET",
+          "httpMethod": "POST",
+          "type": "AWS",
+          "uri": "arn:aws:apigateway:${REGION}:firehose:action/PutRecord",
+          "requestTemplates":{
+            "application/json":  "{ \"DeliveryStreamName\": \"${app-firehouse-to-s3}\", \"Record\": { \"Data\": \"$util.base64Encode($input.json('$'))\" } }"
+          },
+          "requestParameters":{
+            "integration.request.header.Content-Type": "'application/x-amz-json-1.1'"
+          }
+        }
+      }
+    }
+  }
+}

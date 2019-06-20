@@ -1,0 +1,5 @@
+profile = "personal"
+region = "us-east-1"
+app_name = "mypizdiuchky"
+environment = "dev"
+app_version = "latest"

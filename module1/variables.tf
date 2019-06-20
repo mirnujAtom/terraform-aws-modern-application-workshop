@@ -1,1 +1,3 @@
-variable "site_name" {default = "mysite"}
+variable "site_name" {
+  default = "mysite"
+}
