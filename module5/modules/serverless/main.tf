@@ -102,22 +102,23 @@ resource "aws_api_gateway_deployment" "click-processor-rest-api-deployment" {
   stage_name = "${var.environment}"
 }
 
+
 data "aws_api_gateway_resource" "click-processor-rest-api-resource" {
   path = "/clicks"
   rest_api_id = "${aws_api_gateway_rest_api.click-processor-rest-api.id}"
-  depends_on = [ "aws_api_gateway_model.Empty-model" ]
 }
 
 
-resource "aws_api_gateway_model" "Empty-model" {
+
+/*resource "aws_api_gateway_model" "Empty-model" {
   content_type = "application/json"
   name = "Empty"
   rest_api_id = "${aws_api_gateway_rest_api.click-processor-rest-api.id}"
   schema = "{}"
-}
+}*/
 
 
-module "cors" {
+/*module "cors" {
   source = "github.com/squidfunk/terraform-aws-api-gateway-enable-cors"
   version = "0.3.0"
 
@@ -127,4 +128,28 @@ module "cors" {
   allow_headers = [
     "Content-Type"
   ]
+}*/
+
+resource "aws_api_gateway_rest_api" "testapi" {
+  name = "just-a-test-terraform"
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
+
+
+
+module "cors" {
+  source = "mewa/apigateway-cors/aws"
+  version = "1.0.0"
+
+  api          = "${aws_api_gateway_rest_api.click-processor-rest-api.id}"
+  resource = "${data.aws_api_gateway_resource.click-processor-rest-api-resource.id}"
+
+  headers =  ["'Content-Type'"]
+
+  methods = ["GET", "POST"]
+}
+
+
+

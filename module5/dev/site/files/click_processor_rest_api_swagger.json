@@ -5,33 +5,34 @@
   },
   "paths": {
     "/clicks": {
-      "put":{
-        "consumes":[
+      "put": {
+        "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "responses":{
+        "responses": {
           "200": {
             "statusCode": "200",
-            "headers":{
-              "Access-Control-Allow-Headers":{
+            "headers": {
+              "Access-Control-Allow-Headers": {
                 "type": "string"
               },
-              "Access-Control-Allow-Methods":{
+              "Access-Control-Allow-Methods": {
                 "type": "string"
               },
-              "Access-Control-Allow-Origin":{
-                "type": "string" }
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
             }
           }
         },
-        "x-amazon-apigateway-integration":{
-          "responses":{
-            "default":{
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
               "statusCode": "200",
-              "responseParameters":{
+              "responseParameters": {
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type'",
                 "method.response.header.Access-Control-Allow-Methods": "'OPTIONS, PUT'",
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
@@ -43,14 +44,21 @@
           "httpMethod": "POST",
           "type": "AWS",
           "uri": "arn:aws:apigateway:${REGION}:firehose:action/PutRecord",
-          "requestTemplates":{
-            "application/json":  "{ \"DeliveryStreamName\": \"${app-firehouse-to-s3}\", \"Record\": { \"Data\": \"$util.base64Encode($input.json('$'))\" } }"
+          "requestTemplates": {
+            "application/json": "{ \"DeliveryStreamName\": \"${app-firehouse-to-s3}\", \"Record\": { \"Data\": \"$util.base64Encode($input.json('$'))\" } }"
           },
-          "requestParameters":{
+          "requestParameters": {
             "integration.request.header.Content-Type": "'application/x-amz-json-1.1'"
           }
         }
       }
+    }
+  },
+  "definitions": {
+    "Empty": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "title": "Empty Schema",
+      "type": "object"
     }
   }
 }
