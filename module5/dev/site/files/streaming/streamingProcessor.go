@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"log"
 	"io/ioutil"
-	"os"
+//	"os"
 )
 
 // Get Mysfit info from service API

@@ -12,8 +12,7 @@ import (
     "fmt"
     "io"
     "log"
-    "os"
-    "strings"
+    "os" // for logging in main routine
 )
 
 // Info is for logging
@@ -138,11 +137,20 @@ func (m Mysfit) toJson() string {
     output := "{"
 
     output += getItemStringAsJson("mysfitId", m.MysfitId) + ", "
-    output += getItemStringAsJson("thumbImageUri", m.ThumbImageUri) + ", "
-    output += getItemStringAsJson("goodevil", m.GoodEvil) + ", "
-    output += getItemStringAsJson("lawchaos", m.LawChaos) + ", "
+    output += getItemStringAsJson("name", m.Name) + ", "
     output += getItemStringAsJson("species", m.Species) + ", "
-    output += getItemStringAsJson("name", m.Name)
+    output += getItemStringAsJson("description", m.Description) + ", "
+
+    output += getItemIntAsJson("age", m.Age) + ", "
+
+    output += getItemStringAsJson("goodEvil", m.GoodEvil) + ", "
+    output += getItemStringAsJson("lawChaos", m.LawChaos) + ", "
+    output += getItemStringAsJson("thumbImageUri", m.ThumbImageUri) + ", "
+    output += getItemStringAsJson("profileImageUri", m.ProfileImageUri) + ", "
+
+    output += getItemIntAsJson("likes", m.Likes) + ", "
+
+    output += getItemBoolAsJson("adopted", m.Adopted)
 
     output += "}"
 
@@ -414,45 +422,13 @@ func GetMysfit(mysfitId string) string {
 }
 
 // QueryMysfits gets only the specified items
-func QueryMysfits(originalFilter string, originalValue string) string {
-    Info.Println("Original Filter: " + originalFilter)
-    Info.Println("Original Value: " + originalValue)
+func QueryMysfits(filter string, value string) string {
+    Info.Println("Filter: " + filter)
+    Info.Println("Value: " + value)
 
-    filter := strings.ToLower(originalFilter)
-    value := strings.ToLower(originalValue)
-
-    // Normalize filter and value
-    switch filter {
-    case "goodevil":
-        filter = "GoodEvil"
-        switch value {
-        case "good":
-            value = "Good"
-        case "evil":
-            value = "Evil"
-        case "neutral":
-            value = "Neutral"
-        default:
-            Info.Println("Unsupported GoodEvil value: " + originalValue)
-            return ""
-        }
-    case "lawchaos":
-        filter = "LawChaos"
-        switch value {
-        case "lawful":
-            value = "Lawful"
-        case "chaotic":
-            value = "Chaotic"
-        case "neutral":
-            value = "Neutral"
-        default:
-            Info.Println("Unsupported LawChaos value: " + originalValue)
-            return ""
-        }
-    case "MysfitId":
-        filter = "MysfitId"
-    default:
-        Info.Println("Unsupported filter: " + originalFilter)
+    // We only have two secondary indexes: GoodEvil(Index) and LawChaos(Index) and one primary index MysfitId(Index)
+    if filter != "MysfitId" && filter != "GoodEvil" && filter != "LawChaos" {
+        Info.Print("We only allow quering for MysfitId, GoodEvil, or LawChaos")
         return ""
     }
 

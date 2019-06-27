@@ -13,6 +13,8 @@ terraform {
   }
 }
 
+provider "local" {}
+provider "null" {}
 
 data "aws_caller_identity" "current" {}
 
@@ -50,6 +52,7 @@ module "s3site" {
   app_api_endpoint = "${module.authentication.app_api_endpoint}"
   app_user_pool_id = "${module.authentication.app_user_pool_id}"
   app_user_pool_client = "${module.authentication.app_user_pool_client}"
+  lambdaa_api_endpoint = "${module.serverless.lambdaa_api_endpoint}"
 }
 
 module "cicd" {

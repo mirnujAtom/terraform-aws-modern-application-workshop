@@ -11,18 +11,32 @@ resource "aws_s3_bucket" "click-destination-bucket" {
 }
 
 
-data "template_file" "lambda-code" {
+data "template_file" "lambda-code-template" {
   template = "${file("${var.lambda_files_dir}/streaming/streamingProcessor.go")}"
   vars = {
     app_api_endpoint = "${var.app_api_endpoint}"
   }
 }
 
+
+resource "local_file" "lambda-code" {
+  filename = "${var.lambda_files_dir}streaming/bin/streamingProcessor.go"
+  content = "${data.template_file.lambda-code-template.rendered}"
+}
+
+resource "null_resource" "lambda-code-build" {
+  provisioner "local-exec" {
+    command = "go get github.com/aws/aws-lambda-go/lambda && GOOS=linux go build -o streamingProcessor streamingProcessor.go"
+    working_dir = "${var.lambda_files_dir}/streaming/bin/"
+  }
+  depends_on = ["local_file.lambda-code"]
+}
+
 data "archive_file" "lambda" {
   type = "zip"
-  output_path = "${var.lambda_files_dir}/streaming/streamingProcessor.go.zip"
-  source_content_filename = "streamingProcessor.go"
-  source_content = "${data.template_file.lambda-code.rendered}"
+  output_path = "${var.lambda_files_dir}/streaming/streamingProcessor.zip"
+  source_file = "${var.lambda_files_dir}/streaming/bin/streamingProcessor"
+  depends_on = ["local_file.lambda-code"]
 }
 
 resource "aws_lambda_function" "application-click-processor-function" {
@@ -41,7 +55,7 @@ resource "aws_kinesis_firehose_delivery_stream" "app-firehouse-to-s3" {
   name = "${var.app_name}-${var.environment}-firehouse-delivery-stream"
   extended_s3_configuration {
     bucket_arn = "${aws_s3_bucket.click-destination-bucket.arn}"
-    role_arn = "${aws_iam_role.firehouse-delivery-role.arn}"
+    role_arn = "${aws_iam_role.firehose-delivery-role.arn}"
     buffer_interval = 60
     buffer_size = 50
     compression_format = "UNCOMPRESSED"
@@ -83,7 +97,7 @@ data "template_file" "click-processor-rest-api-swagger" {
     API_NAME = "${var.app_name}-${var.environment}-click-processor-rest-api"
     REGION = "${var.region}"
     click-processing-api-role = "${aws_iam_role.click-processing-api-role.arn}"
-    app-firehouse-to-s3 = "${aws_kinesis_firehose_delivery_stream.app-firehouse-to-s3.id}"
+    app-firehouse-to-s3 = "${aws_kinesis_firehose_delivery_stream.app-firehouse-to-s3.name}"
   }
 }
 
@@ -103,10 +117,12 @@ resource "aws_api_gateway_deployment" "click-processor-rest-api-deployment" {
 }
 
 
+/*
 data "aws_api_gateway_resource" "click-processor-rest-api-resource" {
   path = "/clicks"
   rest_api_id = "${aws_api_gateway_rest_api.click-processor-rest-api.id}"
 }
+*/
 
 
 
@@ -130,16 +146,8 @@ data "aws_api_gateway_resource" "click-processor-rest-api-resource" {
   ]
 }*/
 
-resource "aws_api_gateway_rest_api" "testapi" {
-  name = "just-a-test-terraform"
-  endpoint_configuration {
-    types = ["REGIONAL"]
-  }
-}
 
-
-
-module "cors" {
+/*module "cors" {
   source = "mewa/apigateway-cors/aws"
   version = "1.0.0"
 
@@ -149,7 +157,7 @@ module "cors" {
   headers =  ["'Content-Type'"]
 
   methods = ["GET", "POST"]
-}
+}*/
 
 
 

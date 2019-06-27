@@ -38,16 +38,14 @@ func getContentType() string {
 
 // Handle GET requests
 func getHandler(w http.ResponseWriter, r *http.Request, t string) (string, string) {
-    fmt.Println("In getHandler")
-
     setupResponse(&w)
+
     // We handle (in local testing):
     // /mysfits                              returns all mysfits
     // /mysfits?filter=FILTER&value=VALUE    returns a mysfit where FILTER is has VALUE
-    // /mysfits/{mysfitsId}                  returns a mysfit by their mysfitId
+    // /mysfits/{mysfitsId}                  returns a mysfit by their MysfitId
 
     var path = r.URL.Path
-    fmt.Println("Got path: " + path)
 
     // If just /, return simple message
     if path == "/" {
@@ -57,18 +55,17 @@ func getHandler(w http.ResponseWriter, r *http.Request, t string) (string, strin
 
     // If just /mysfits, get them all
     if path == "/mysfits" {
-        // Did we get a filter request?
-        filter := r.URL.Query().Get("filter")
-        if filter != "" {
-            fmt.Println("Got filter: " + filter)
-            value := r.URL.Query().Get("value")
-            if value != "" {
-                fmt.Println("Got value: " + value)
-                return QueryMysfits(filter, value), t
-            }
-        } else {
-            fmt.Println("Returning all mysfits")
-            return GetAllMysfits(), t
+        return GetAllMysfits(), t
+    }
+
+    // Did we get a filter request?
+    filter := r.URL.Query().Get("filter")
+    if filter != "" {
+        fmt.Println("Got filter: " + filter)
+        value := r.URL.Query().Get("value")
+        if value != "" {
+            fmt.Println("Got value: " + value)
+            return QueryMysfits(filter, value), t
         }
     }
 
@@ -93,6 +90,7 @@ func getHandler(w http.ResponseWriter, r *http.Request, t string) (string, strin
 // Handle POST requests
 func postHandler(w http.ResponseWriter, r *http.Request, t string) (string, string) {
     setupResponse(&w)
+
     // We support:
     // /mysfits/<mysfitId>/like     increments the likes for mysfit with mysfitId
     // /mysfits/<mysfitId>/adopt    enables adopt for mysfit with mysfitId
@@ -172,11 +170,12 @@ func main() {
         DefaultFormat = format
     }
 
-    fmt.Println("Returning format: " + DefaultFormat)
-
-    fmt.Println("Running locally on http://localhost" + DefaultPort)
-
     mux := http.NewServeMux()
     mux.Handle("/", http.HandlerFunc(mainHandler))
     http.ListenAndServe(DefaultPort, mux)
+
+    fmt.Println("Running on: ")
+    fmt.Println("http://localhost/" + port)
+    fmt.Println("Use the following to get ALL mysfits:")
+    fmt.Println("http://localhost/" + port + "/mysfits")
 }

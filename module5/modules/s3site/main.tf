@@ -35,6 +35,7 @@ data "template_file" "site_index_file" {
     app_user_pool_client = "${var.app_user_pool_client}"
     app_api_endpoint = "${var.app_api_endpoint}"
     app_user_pool_id = "${var.app_user_pool_id}"
+    lambdaa_api_endpoint = "${var.lambdaa_api_endpoint}"
   }
 }
 

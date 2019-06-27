@@ -1,9 +1,9 @@
-resource "aws_iam_role" "firehouse-delivery-role" {
-  name = "${var.app_name}-${var.environment}-firehouse-delivery-role"
-  assume_role_policy = "${data.aws_iam_policy_document.firehouse-delivery-role-assume.json}"
+resource "aws_iam_role" "firehose-delivery-role" {
+  name = "${var.app_name}-${var.environment}-firehose-delivery-role"
+  assume_role_policy = "${data.aws_iam_policy_document.firehose-delivery-role-assume.json}"
 }
 
-data "aws_iam_policy_document" "firehouse-delivery-role-assume" {
+data "aws_iam_policy_document" "firehose-delivery-role-assume" {
   statement {
     effect = "Allow"
     actions = [ "sts:AssumeRole" ]
@@ -19,6 +19,36 @@ data "aws_iam_policy_document" "firehouse-delivery-role-assume" {
   }
 }
 
+
+data "aws_iam_policy_document" "firehose-delivery-policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:PutObject"
+    ]
+    resources = [
+      "${aws_s3_bucket.click-destination-bucket.arn}",
+      "${aws_s3_bucket.click-destination-bucket.arn}*"
+    ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+    "lambda:InvokeFunction"
+    ]
+    resources = [ "${aws_kinesis_firehose_delivery_stream.app-firehouse-to-s3.arn}" ]
+  }
+}
+
+resource "aws_iam_role_policy" "firehose-delivery-role-policy" {
+  policy = "${data.aws_iam_policy_document.firehose-delivery-policy.json}"
+  role = "${aws_iam_role.firehose-delivery-role.name}"
+}
 
 //////////////////////////
 
@@ -54,6 +84,11 @@ resource "aws_iam_role_policy" "app-lambda-policy" {
   role = "${aws_iam_role.app-lambda-role.id}"
 }
 
+resource "aws_iam_role_policy_attachment" "AWSLambdaBasicExecutionRole" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  role = "${aws_iam_role.app-lambda-role.id}"
+}
+
 ///////////////////////////
 
 resource "aws_iam_role" "click-processing-api-role" {
@@ -65,7 +100,8 @@ data "aws_iam_policy_document" "click-processing-api-role-assume" {
   statement {
     effect = "Allow"
     actions = [
-      "sts:AssumeRole"]
+      "sts:AssumeRole"
+    ]
     principals {
       identifiers = [
         "apigateway.amazonaws.com"
