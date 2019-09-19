@@ -2,6 +2,9 @@
 resource "aws_dynamodb_table_item" "application_db_item1" {
   hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
   table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+  lifecycle {
+    ignore_changes = ["item"]
+  }
 
   item = <<ITEM
   {
@@ -45,6 +48,9 @@ resource "aws_dynamodb_table_item" "application_db_item1" {
   resource "aws_dynamodb_table_item" "application_db_item2" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -87,6 +93,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item3" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -130,6 +139,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item4" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -172,6 +184,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item5" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -214,6 +229,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item6" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -256,6 +274,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item7" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -298,6 +319,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item8" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -340,6 +364,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item9" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -383,6 +410,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item10" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -425,6 +455,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item11" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {
@@ -467,6 +500,9 @@ ITEM
   resource "aws_dynamodb_table_item" "application_db_item12" {
     hash_key = "${aws_dynamodb_table.application_dynamodb_table.hash_key}"
     table_name = "${aws_dynamodb_table.application_dynamodb_table.name}"
+    lifecycle {
+      ignore_changes = ["item"]
+    }
     item = <<ITEM
 {
                   "MysfitId" : {

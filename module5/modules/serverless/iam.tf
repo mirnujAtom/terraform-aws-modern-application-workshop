@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "firehose-delivery-policy" {
     actions = [
     "lambda:InvokeFunction"
     ]
-    resources = [ "${aws_kinesis_firehose_delivery_stream.app-firehouse-to-s3.arn}" ]
+    resources = [ "${aws_lambda_function.application-click-processor-function.arn}" ]
   }
 }
 

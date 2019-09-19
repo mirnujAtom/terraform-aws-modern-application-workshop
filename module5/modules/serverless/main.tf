@@ -26,18 +26,18 @@ resource "local_file" "lambda-code" {
 
 resource "null_resource" "lambda-code-build" {
   provisioner "local-exec" {
-    command = "go get github.com/aws/aws-lambda-go/lambda && GOOS=linux go build -o streamingProcessor streamingProcessor.go"
+    command = "go get github.com/aws/aws-lambda-go/lambda && GOOS=linux go build -o streamingProcessor streamingProcessor.go && zip ../streamingProcessor.zip streamingProcessor && sleep 10"
     working_dir = "${var.lambda_files_dir}/streaming/bin/"
   }
   depends_on = ["local_file.lambda-code"]
 }
 
-data "archive_file" "lambda" {
-  type = "zip"
-  output_path = "${var.lambda_files_dir}/streaming/streamingProcessor.zip"
-  source_file = "${var.lambda_files_dir}/streaming/bin/streamingProcessor"
-  depends_on = ["local_file.lambda-code"]
-}
+//data "archive_file" "lambda" {
+//  type = "zip"
+//  output_path = "${var.lambda_files_dir}/streaming/streamingProcessor.zip"
+//  source_file = "${var.lambda_files_dir}/streaming/bin/streamingProcessor"
+//  depends_on = ["local_file.lambda-code"]
+//}
 
 resource "aws_lambda_function" "application-click-processor-function" {
   function_name = "${var.app_name}-${var.environment}-click-processor"
@@ -46,8 +46,10 @@ resource "aws_lambda_function" "application-click-processor-function" {
   runtime = "go1.x"
   memory_size = 128
   timeout = 30
-  filename = "${data.archive_file.lambda.output_path}"
-  source_code_hash = "${data.archive_file.lambda.output_base64sha256}"
+//  filename = "${data.archive_file.lambda.output_path}"
+  //  source_code_hash = "${data.archive_file.lambda.output_base64sha256}"
+  filename = "${var.lambda_files_dir}/streaming/streamingProcessor.zip"
+  depends_on = ["null_resource.lambda-code-build"]
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "app-firehouse-to-s3" {

@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"log"
 	"io/ioutil"
-//	"os"
+	"strings"
+
+	//	"os"
 )
 
 // Get Mysfit info from service API
@@ -46,7 +48,7 @@ func handleRequest(evnt events.KinesisFirehoseEvent) (events.KinesisFirehoseResp
 		var transformedRecord events.KinesisFirehoseResponseRecord
 		transformedRecord.RecordID = record.RecordID
 		transformedRecord.Result = events.KinesisFirehoseTransformedStateOk
-		// transformedRecord.Data = []byte(strings.ToUpper(string(record.Data)))
+		transformedRecord.Data = []byte(strings.ToUpper(string(record.Data)))
 
 		response.Records = append(response.Records, transformedRecord)
 	}
