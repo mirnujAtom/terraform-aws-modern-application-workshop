@@ -3,6 +3,7 @@
 # build execution in separate pre-defined phases for logical organization, and
 # list the commands that will be executed on the provisioned build server
 # performing a build execution job.
+#demo change
 version: 0.2
 
 phases:

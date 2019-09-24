@@ -41,7 +41,7 @@ resource "null_resource" "lambda-code-build" {
 
 resource "aws_lambda_function" "application-click-processor-function" {
   function_name = "${var.app_name}-${var.environment}-click-processor"
-  handler = "streamProcessor.processRecord"
+  handler = "streamingProcessor"
   role = "${aws_iam_role.app-lambda-role.arn}"
   runtime = "go1.x"
   memory_size = 128

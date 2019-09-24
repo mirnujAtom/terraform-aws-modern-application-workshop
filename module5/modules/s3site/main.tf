@@ -22,6 +22,8 @@ data "aws_iam_policy_document" "site_s3_iam_policy_document" {
   }
 }
 
+
+## Bucket policy
 resource "aws_s3_bucket_policy" "site_s3_bucket_policy" {
   bucket = "${aws_s3_bucket.site_s3_bucket.id}"
   policy = "${data.aws_iam_policy_document.site_s3_iam_policy_document.json}"
@@ -39,6 +41,8 @@ data "template_file" "site_index_file" {
   }
 }
 
+
+## Index.html file generator
 resource "aws_s3_bucket_object" "indexfile" {
   bucket = "${aws_s3_bucket.site_s3_bucket.id}"
   key = "index.html"
@@ -58,6 +62,7 @@ data "template_file" "site_confirm_file" {
   }
 }
 
+## confirm.html file generator
 resource "aws_s3_bucket_object" "confirm_file" {
   bucket = "${aws_s3_bucket.site_s3_bucket.id}"
   key = "confirm.html"
@@ -76,6 +81,7 @@ data "template_file" "site_register_file" {
   }
 }
 
+## register.html file generator
 resource "aws_s3_bucket_object" "register_file" {
   bucket = "${aws_s3_bucket.site_s3_bucket.id}"
   key = "register.html"
@@ -87,6 +93,7 @@ resource "aws_s3_bucket_object" "register_file" {
 }
 
 
+## Cognito js files
 resource "aws_s3_bucket_object" "amazon-cognito-identity" {
   bucket = "${aws_s3_bucket.site_s3_bucket.id}"
   key = "js/amazon-cognito-identity.min.js"
